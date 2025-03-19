@@ -23,7 +23,7 @@ class Diccionario:
                 list[str]: Lista de palabras leídas del archivo, eliminando espacios en blanco y saltos de línea.
         """
         palabras = []
-        with open("assets/palabras.txt", "r") as archivo:
+        with open("assets/palabras.txt", "r", encoding="utf8") as archivo:
             for line in archivo:
                 palabras.append(line.strip())
 

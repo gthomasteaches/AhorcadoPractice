@@ -1,4 +1,3 @@
-import os
 import colorama
 from colorama import Fore, Style
 from src.model.juego import Juego
