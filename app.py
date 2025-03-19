@@ -5,4 +5,4 @@ from src.view.menu import Menu
 if __name__ == "__main__":
     juego: Juego = Juego()
     menu: Menu = Menu(juego)
-    menu.iniciar()
+    menu.inicio()

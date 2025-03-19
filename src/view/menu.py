@@ -4,62 +4,35 @@ from src.model.juego import Juego
 
 
 class Menu:
-    """
-    Representa el menú principal del juego de adivinanza de palabras.
-
-    Attributes:
-        juego (Juego): Instancia del juego que gestiona la lógica de la partida.
-    """
 
     def __init__(self, juego: Juego):
-        """
-        Inicializa el menú con una instancia de Juego.
-
-        Args:
-            juego (Juego): Objeto que contiene la lógica del juego.
-        """
         colorama.init(autoreset=True)  # Inicializar colorama para Windows
         self.juego: Juego = juego
 
-    def __mostrar_opciones(self):
-        """
-        Muestra las opciones disponibles en el menú principal.
-        """
+    def __opciones(self):
         print(Fore.CYAN + Style.BRIGHT + "🎮 MENÚ PRINCIPAL 🎮\n")
         print(Fore.YELLOW + "1️⃣  Jugar")
         print(Fore.GREEN + "2️⃣  Configuración")
         print(Fore.BLUE + "3️⃣  Salir\n")
 
-    def __pedir_letra(self) -> list[int]:
-        """
-        Solicita al usuario una letra para adivinar.
-
-        Returns:
-            list[int]: Lista con las posiciones donde aparece la letra en la palabra.
-        """
+    def __letra(self) -> list[int]:
         letra = input(Fore.YELLOW + "🎮 ¡Ingresa una letra!: ")
         return self.juego.adivinar(letra)
 
-    def __modificar_configuracion(self):
-        """
-        Permite al usuario cambiar la dificultad del juego.
-        """
+    def __configuracion(self):
         print(Fore.GREEN + "1️⃣  Dificultad Baja")
         print(Fore.GREEN + "2️⃣  Dificultad Media")
         print(Fore.GREEN + "3️⃣  Dificultad Alta")
         opcion = input(Fore.YELLOW + "🎮 ¡Selecciona la dificultad con la que deseas jugar!: ")
 
         if opcion == "1":
-            self.juego.modificar_dificultad(Juego.DIFICULTAD_BAJA)
+            self.juego.modificar_dificultad(Juego.D_B)
         elif opcion == "2":
-            self.juego.modificar_dificultad(Juego.DIFICULTAD_MEDIA)
+            self.juego.modificar_dificultad(Juego.D_M)
         elif opcion == "3":
-            self.juego.modificar_dificultad(Juego.DIFICULTAD_ALTA)
+            self.juego.modificar_dificultad(Juego.D_A)
 
-    def __controlar_opcion_1(self):
-        """
-        Controla el flujo del juego cuando el usuario selecciona la opción de jugar.
-        """
+    def __menu_1(self):
         cantidad_posiciones = self.juego.iniciar_partida()
         display = Fore.RED + " _ " * cantidad_posiciones
         print(display)
@@ -76,12 +49,9 @@ class Menu:
             intentos_realizados = intentos_permitidos - self.juego.obtener_intentos_realizados()
             letra = input(Fore.YELLOW + f"🎮 ¡Ingresa una letra! ({intentos_realizados}/{intentos_permitidos}) ").upper()
             resultado_adivinanza = self.juego.adivinar(letra)
-            self.__mostrar_resultado_jugada(resultado_adivinanza)
+            self.__resultado_jugada(resultado_adivinanza)
 
-    def __mostrar_adivinanza(self):
-        """
-        Muestra el estado actual de la palabra a adivinar, revelando las letras acertadas.
-        """
+    def __adivinanza(self):
         letras = self.juego.obtener_adivinanza().obtener_letras()
         posiciones = self.juego.obtener_adivinanza().obtener_posiciones()
         display = ""
@@ -93,33 +63,24 @@ class Menu:
 
         print(display)
 
-    def __mostrar_resultado_jugada(self, resultado_adivinanza: list[int]):
-        """
-        Muestra el resultado de la jugada del usuario.
-
-        Args:
-            resultado_adivinanza (list[int]): Lista con las posiciones donde aparece la letra en la palabra.
-        """
+    def __resultado_jugada(self, resultado_adivinanza: list[int]):
         if len(resultado_adivinanza) == 0:
             print(Fore.YELLOW + "¡Lo siento, no has acertado! ¡Sigue intentando!")
         else:
             print(Fore.YELLOW + "¡Muy bien, has acertado! ¡Sigue así!")
-        self.__mostrar_adivinanza()
+        self.__adivinanza()
 
-    def iniciar(self):
-        """
-        Inicia el menú del juego y gestiona las opciones seleccionadas por el usuario.
-        """
+    def inicio(self):
         while True:
-            self.__mostrar_opciones()
+            self.__opciones()
             opcion = input(Fore.MAGENTA + "👉 Selecciona una opción: ")
 
             if opcion == "1":
                 print(Fore.YELLOW + "🎮 ¡Comenzando el juego!")
-                self.__controlar_opcion_1()
+                self.__menu_1()
             elif opcion == "2":
                 print(Fore.GREEN + "⚙️  Abriendo configuración...")
-                self.__modificar_configuracion()
+                self.__configuracion()
             elif opcion == "3":
                 exit()
             else:
